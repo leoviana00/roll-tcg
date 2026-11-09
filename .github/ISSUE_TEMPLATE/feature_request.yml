@@ -1,0 +1,78 @@
+
+name: "💡 Solicitação de funcionalidade"
+description: "Proponha uma nova funcionalidade ou melhoria para o ROLL TCG."
+title: "[FEATURE] - "
+labels: ["enhancement"]
+
+body:
+  - type: dropdown
+    id: dominio
+    attributes:
+      label: "Domínio"
+      description: "Qual área do projeto será impactada?"
+      options:
+        - Game Engine
+        - Sistema de cartas
+        - Frontend
+        - Backend
+        - Infraestrutura
+        - Documentação
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: resumo
+    attributes:
+      label: "Resumo"
+      description: "Apresente brevemente a funcionalidade proposta."
+      placeholder: "Descreva sua ideia."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: "Problema ou motivação"
+      description: "Qual problema essa funcionalidade pretende resolver?"
+      placeholder: "Descreva o contexto e a necessidade."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solucao
+    attributes:
+      label: "Solução proposta"
+      description: "Como você imagina que essa funcionalidade deveria funcionar?"
+      placeholder: "Descreva o comportamento esperado."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternativas
+    attributes:
+      label: "Alternativas consideradas"
+      description: "Existem outras soluções possíveis?"
+      placeholder: "Descreva outras abordagens."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: contribuicao
+    attributes:
+      label: "Interesse em contribuir"
+      description: "Você gostaria de implementar essa funcionalidade?"
+      options:
+        - "Sim"
+        - "Não"
+        - "Talvez"
+    validations:
+      required: true
+
+  - type: textarea
+    id: adicional
+    attributes:
+      label: "Informações adicionais"
+      description: "Adicione referências, imagens ou outros detalhes relevantes."
+    validations:
+      required: false
