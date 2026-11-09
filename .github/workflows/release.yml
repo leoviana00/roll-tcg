@@ -1,0 +1,93 @@
+
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - version.json
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: roll-tcg-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Generate and publish release
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - name: Validate version file
+        run: |
+          node -e "
+            const fs = require('node:fs');
+            const data = JSON.parse(fs.readFileSync('version.json', 'utf8'));
+
+            if (data.name !== 'roll-tcg') {
+              throw new Error('Invalid project name');
+            }
+
+            if (!/^\d+\.\d+\.\d+$/.test(data.version)) {
+              throw new Error('Invalid semantic version');
+            }
+
+            console.log('Version:', data.version);
+          "
+
+      - name: Generate changelog
+        id: changelog
+        run: node scripts/release.mjs
+        env:
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+
+      - name: Configure Git
+        if: steps.changelog.outputs.release_created == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changelog
+        if: steps.changelog.outputs.release_created == 'true'
+        run: |
+          git add CHANGELOG.md
+
+          if git diff --cached --quiet; then
+            echo "Erro: CHANGELOG.md não apresenta alterações."
+            exit 1
+          fi
+
+          git commit -m "docs(release): update changelog for ${{ steps.changelog.outputs.release_tag }}"
+
+      - name: Create annotated tag
+        if: steps.changelog.outputs.release_created == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.changelog.outputs.release_tag }}
+        run: |
+          git tag -a "$RELEASE_TAG" -m "ROLL TCG $RELEASE_TAG"
+
+      - name: Publish changelog and tag atomically
+        if: steps.changelog.outputs.release_created == 'true'
+        env:
+          RELEASE_TAG: ${{ steps.changelog.outputs.release_tag }}
+        run: |
+          git push --atomic origin \
+            HEAD:refs/heads/main \
+            "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"

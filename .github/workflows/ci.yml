@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 26
+
+      - name: Validate version.json
+        run: |
+          node -e "
+            const fs = require('node:fs');
+            const data = JSON.parse(fs.readFileSync('version.json', 'utf8'));
+
+            if (data.name !== 'roll-tcg') {
+              throw new Error('Invalid project name');
+            }
+
+            if (!/^\d+\.\d+\.\d+$/.test(data.version)) {
+              throw new Error('Invalid semantic version');
+            }
+
+            console.log('Version validated:', data.version);
+          "
+
+      - name: Validate repository files
+        run: |
+          test -f README.md
+          test -f LICENSE
+          test -f CONTRIBUTING.md
+          test -f .editorconfig
+          test -f .gitignore
+          echo "Repository structure validated successfully."

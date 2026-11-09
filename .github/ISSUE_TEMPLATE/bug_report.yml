@@ -1,0 +1,87 @@
+name: "🐛 Relatar um bug"
+description: "Reporte um problema encontrado no ROLL TCG."
+title: "[BUG] - "
+labels: ["bug"]
+
+body:
+  - type: textarea
+    id: descricao
+    attributes:
+      label: "Descrição do problema"
+      description: "Explique de forma clara o problema encontrado."
+      placeholder: "Descreva o que aconteceu."
+    validations:
+      required: true
+
+  - type: textarea
+    id: comportamento-esperado
+    attributes:
+      label: "Comportamento esperado"
+      description: "O que deveria acontecer?"
+      placeholder: "Descreva o comportamento esperado."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducao
+    attributes:
+      label: "Etapas para reproduzir"
+      description: "Informe os passos necessários para reproduzir o problema."
+      placeholder: |
+        1. Acesse...
+        2. Execute...
+        3. Observe o problema...
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: "URL ou referência"
+      description: "Informe uma URL, tela, funcionalidade ou outro ponto de referência, se aplicável."
+      placeholder: "https://..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: "Ambiente"
+      description: "Informe onde o problema foi identificado."
+      placeholder: |
+        Exemplo:
+        - Navegador: Chrome
+        - Sistema operacional: Windows 11
+        - Versão: 0.1.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: evidencias
+    attributes:
+      label: "Evidências"
+      description: "Adicione capturas de tela, vídeos ou outras evidências."
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs ou mensagens de erro"
+      description: "Cole logs ou mensagens relevantes, se disponíveis."
+      render: text
+    validations:
+      required: false
+
+  - type: dropdown
+    id: impacto
+    attributes:
+      label: "Impacto"
+      description: "Qual é o impacto do problema?"
+      options:
+        - "Crítico — impede o uso do sistema"
+        - "Alto — compromete uma funcionalidade importante"
+        - "Médio — existe uma alternativa para contornar"
+        - "Baixo — problema visual ou de pouca relevância"
+    validations:
+      required: true
