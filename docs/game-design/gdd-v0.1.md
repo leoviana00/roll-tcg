@@ -1,10 +1,10 @@
 # ROLL TCG — Game Design Document
 
-**Versão:** 0.1
-**Status:** Fundação do design
-**Gênero:** Trading Card Game (TCG) baseado em Jiu-Jitsu Brasileiro
-**Plataforma inicial:** Web
-**Modo inicial:** Partida local contra IA
+- **Versão:** 0.1
+- **Status:** Fundação do design
+- **Gênero:** Trading Card Game (TCG) baseado em Jiu-Jitsu Brasileiro
+- **Plataforma inicial:** Web
+- **Modo inicial:** Partida local contra IA
 
 ---
 
